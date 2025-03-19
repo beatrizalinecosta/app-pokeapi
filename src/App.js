@@ -1,24 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import ListPage from './pages/ListPage';
+import CreatePage from './pages/CreatePage';
+import { useState } from 'react';
 
 function App() {
+  const [favoritePokemons, setFavoritePokemons] = useState([]); 
+
+  const addFavorite = (pokemon) => {
+    setFavoritePokemons([...favoritePokemons, pokemon]);
+  };
+
+  const removeFavorite = (pokemon) => {
+    setFavoritePokemons(favoritePokemons.filter(fav => fav.id !== pokemon.id));
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/pokemons" element={<ListPage addFavorite={addFavorite} removeFavorite={removeFavorite} favoritePokemons={favoritePokemons} />} />
+        <Route path="/create" element={<CreatePage />} />
+      </Routes>
+    </Router>
   );
 }
 
